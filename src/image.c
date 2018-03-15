@@ -4,6 +4,7 @@
 #include "cuda.h"
 #include <stdio.h>
 #include <math.h>
+#include <lo/lo.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -235,6 +236,14 @@ image **load_alphabet()
     return alphabets;
 }
 
+void send_assert(char * s, float x, float y, float w, float h) {
+    lo_address address = lo_address_new(NULL, "41234");
+    char fact[4096]; // lol buffer overflow exploit
+    sprintf(fact, "there is a %s at %0.3f %0.3f %0.3f %0.3f", s, x, y, w, h);
+    printf("%s\n", fact);
+    lo_send(address, "/assert", "s", fact);
+}
+
 void draw_detections(image im, int num, float thresh, box *boxes, float **probs, float **masks, char **names, image **alphabet, int classes)
 {
     int i,j;
@@ -248,7 +257,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
                     strcat(labelstr, names[j]);
                     class = j;
                 } else {
-                    strcat(labelstr, ", ");
+                    strcat(labelstr, "");
                     strcat(labelstr, names[j]);
                 }
                 printf("%s: %.0f%%\n", names[j], probs[i][j]*100);
@@ -287,6 +296,8 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(right > im.w-1) right = im.w-1;
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
+
+	    send_assert(labelstr, b.x, b.y, b.w, b.h);
 
             draw_box_width(im, left, top, right, bot, width, red, green, blue);
             if (alphabet) {

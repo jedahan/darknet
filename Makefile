@@ -1,8 +1,9 @@
-GPU=0
+GPU=1
 CUDNN=0
-OPENCV=0
+OPENCV=1
 OPENMP=0
 DEBUG=0
+LLO=1
 
 ARCH= -gencode arch=compute_30,code=sm_30 \
       -gencode arch=compute_35,code=sm_35 \
@@ -24,7 +25,7 @@ NVCC=nvcc
 AR=ar
 ARFLAGS=rcs
 OPTS=-Ofast
-LDFLAGS= -lm -pthread 
+LDFLAGS= -lm -pthread
 COMMON= -Iinclude/ -Isrc/
 CFLAGS=-Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 
@@ -62,6 +63,11 @@ EXECOBJA=captcha.o lsd.o super.o art.o tag.o cifar.o go.o rnn.o segmenter.o regr
 ifeq ($(GPU), 1) 
 LDFLAGS+= -lstdc++ 
 OBJ+=convolutional_kernels.o deconvolutional_kernels.o activation_kernels.o im2col_kernels.o col2im_kernels.o blas_kernels.o crop_layer_kernels.o dropout_layer_kernels.o maxpool_layer_kernels.o avgpool_layer_kernels.o
+endif
+
+ifeq ($(LLO), 1)
+LDFLAGS+= `pkg-config --libs liblo`
+COMMON+= `pkg-config --cflags liblo`
 endif
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))

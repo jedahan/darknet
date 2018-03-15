@@ -1,8 +1,8 @@
-![Darknet Logo](http://pjreddie.com/media/files/darknet-black-small.png)
+# yoloSensor
 
-#Darknet#
-Darknet is an open source neural network framework written in C and CUDA. It is fast, easy to install, and supports CPU and GPU computation.
+this takes the darknet yolo 2 sensor, and sends it over osc to a [living-room-server][]
 
-For more information see the [Darknet project website](http://pjreddie.com/darknet).
+you will need **yolo.weights** in the root directory
 
-For questions or issues please use the [Google Group](https://groups.google.com/forum/#!forum/darknet).
+It is based off of [Darknet](http://pjreddie.com/darknet) and Liblo
+
