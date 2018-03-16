@@ -24,7 +24,7 @@ Compile with
 
 # running
 
-  ./yoloSensor cfg/yolo9000.cfg cfg/coco.data -thresh 0.15
+  ./yoloSensor detector demo $PWD/cfg/coco.data $PWD/cfg/yolo.cfg $PWD/yolo.weights -thresh 0.05
 
 # credits
 
